@@ -72,20 +72,27 @@
                     this.welMsg = 'Welcome To Register'
                 }
             },
-            open: function() {
+            open: function(Type, msg) {
                 this.$message({
-                    message: '请填写完整表格',
-                    type: 'warning'
+                    message: msg,
+                    type: Type
                 })
             },
             checkRegister: function() {
                 if (this.rUsename == '' || this.rNickname == '' || this.rPasswd == '' || this.ryPasswd == '' || this.rPosition == '') {
-                    this.open()
+                    this.open('warning','请填写完整表格')
                 }
             },
             checkLogin: function() {
                 if (this.usernameInput == '' || this.passwdInput == '') {
                     this.open()
+                } else {
+                    if (this.usernameInput == 'admin' && this.passwdInput == 'admin' ) {
+                        this.open('success','登录成功');
+                        this.$router.push('/');
+                    } else {
+                        this.open('error','用户名或密码错误');
+                    }
                 }
             }
         }

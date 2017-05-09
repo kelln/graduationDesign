@@ -6,23 +6,19 @@ import VueRouter from 'vue-router'
 import App from './App'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
-import LoginAndRegister from './components/LoginAndRegister'
+import * as conf from './datas/data.js'
 
+console.log(conf.tourData);
 Vue.use(ElementUI)
 Vue.use(Vuex)
 Vue.use(VueRouter)
 
 Vue.config.productionTip = false
 
-const components = {
-	LoginAndRegister
-}
-
-const Login = { template: LoginAndRegister }
-
 const routes = [
 	{ path: '/', component: function(resolve) { require(['./components/HomePage.vue'], resolve) }, name: 'homePage' },
-	{ path: '/login', component: function(resolve) { require(['./components/LoginAndRegister.vue'], resolve) }, name: 'login' }
+	{ path: '/login', component: function(resolve) { require(['./components/LoginAndRegister.vue'], resolve) }, name: 'login' },
+	{ path: '/test', component: function(resolve) { require(['./components/test.vue'], resolve) }, name: 'test' }
 
 ]
 
@@ -34,6 +30,5 @@ const router = new VueRouter({
 new Vue({
   el: '#app',
   render: x => x(App),
-  router,
-  components
+  router
 })
