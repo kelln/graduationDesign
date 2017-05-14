@@ -1,0 +1,101 @@
+<template>
+	<el-row class="show-imgcard">
+		<el-col :span="7" v-for="(item, index) in cardInfo" :offset="0">
+			<el-card :body-style="{ padding: '0px' }">
+				<img :src="item.photo" height="300" width="800" class="image" alt="img">
+				<div style="padding: 14px;">
+					<h3 class="title">{{ item.title }}</h3>
+          <span class="info">{{ item.info }}</span>
+					<!-- <div class="bottom clearfix">
+						<time class="time">{{ currentDate }}</time>
+						<el-button type="text" class="button" @click="clicked">操作按钮</el-button>
+					</div> -->
+				</div>
+			</el-card>
+		</el-col>
+	</el-row>
+</template>
+
+<script>
+	export default {
+    props: [
+            'cardInfo'
+    ],
+		data() {
+			return {
+				currentDate: new Date().toLocaleDateString()
+			}
+		},
+    created() {
+      console.log(this.cardInfo)
+    },
+    methods: {
+      clicked: function() {
+        console.log(this.cardInfo);
+      }
+
+    }
+	}
+</script>
+
+<style>
+	.time {
+    font-size: 13px;
+    color: #999;
+  }
+  
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+
+  .button {
+    padding: 0;
+    float: right;
+  }
+
+  .image {
+    width: 100%;
+    display: block;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+      display: table;
+      content: "";
+  }
+  
+  .clearfix:after {
+      clear: both
+  }
+
+  .show-imgcard .el-col {
+    margin-top: 50px;
+  }
+
+  .el-row {
+    /*margin-left: 5%;*/
+  }
+
+  .el-col {
+    margin-left: 3.3%;
+  }
+
+  .show-imgcard .title {
+    margin-top: 3px;
+    margin-bottom: 10px;
+  }
+
+  .el-card {
+    cursor: pointer;
+  }
+
+  .show-imgcard .info {
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical; 
+    -webkit-line-clamp: 3; 
+    overflow: hidden;
+  }
+</style>
