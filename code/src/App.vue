@@ -11,20 +11,21 @@
 </template>
 
 <script>
-import Header from './components/Head'
-import Foot from './components/Footer.vue'
-import Test from './components/test.vue'
+  import Header from './components/Head'
+  import Foot from './components/Footer.vue'
+  import Test from './components/test.vue'
 // import Clock from './components/clock.vue'
 
-export default {
-  name: 'app',
-  components: {
-    'home-header': Header,
-    'home-footer': Foot,
-    // 'clock': Clock,
-    'test': Test
-  }
+  export default {
+    name: 'app',
+    components: {
+      'home-header': Header,
+      'home-footer': Foot,
+      // 'clock': Clock,
+      'test': Test
+    }
 }
+
 </script>
 
 <style scoped>
@@ -40,4 +41,9 @@ export default {
     left: 10px;
     top: 10%;
   }
+
+  .content {
+    width: 100% !important;
+  }
 </style>
+

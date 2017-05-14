@@ -19,16 +19,16 @@
 <style scoped>
 	.container {
 		width: 100%;
-		height: 140px;
+		height: 80px;
 		background-color: #EEF1F6;
 		position: absolute;
-		bottom: 0px;
 		left: 0px;
 	}
 	.container span {
 		display: block;
-		padding-top: 80px;
-		padding-left: 10px;	
+		position: absolute;
+		bottom: 10px;
+		left: 10px;
 		color: #999;
 		font-weight: 500;
 		font-size: 1.2em;

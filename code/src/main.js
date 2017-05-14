@@ -16,10 +16,10 @@ Vue.use(VueRouter)
 Vue.config.productionTip = false
 
 const routes = [
-	{ path: '/', component: function(resolve) { require(['./components/HomePage.vue'], resolve) }, name: 'homePage' },
-	{ path: '/login', component: function(resolve) { require(['./components/LoginAndRegister.vue'], resolve) }, name: 'login' },
-	{ path: '/test', component: function(resolve) { require(['./components/test.vue'], resolve) }, name: 'test' }
-
+	{ path: '/', component: function(resolve) { require(['./components/Pages/HomePage.vue'], resolve) }, name: 'homePage' },
+	{ path: '/login', component: function(resolve) { require(['./components/Pages/LoginAndRegister.vue'], resolve) }, name: 'login' },
+	{ path: '/test', component: function(resolve) { require(['./components/test.vue'], resolve) }, name: 'test' },
+	{ path: '/viewdetial', component: function(resolve) { require(['./components/Pages/viewDetailPage.vue'], resolve) }, name: 'detialPage' },
 ]
 
 const router = new VueRouter({

@@ -1,12 +1,20 @@
 <template>
-	<test></test>
+	<el-pagination
+    layout="prev, pager, next"
+    :page-size="6"
+    :total="14">
+  </el-pagination>
 </template>
 
 <script>
-	import Test from './Card.vue'
 	export default {
-		components: {
-			test: Test
-		}
+		
 	}
 </script>
+
+<style>
+	.el-pagination {
+		margin: 30px 0 20px 0;
+		text-align: center;
+	}
+</style>
