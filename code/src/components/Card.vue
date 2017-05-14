@@ -2,9 +2,10 @@
 	<!-- <el-row>
 		<el-col :span="6" v-for="(o, index) in 2" :offset="index > 0 ? 2 : 0"> -->
 			<el-card :body-style="{ padding: '0px' }">
-				<img src="../../static/resources/img/Hangbour.png" height="175" width="220" class="image" alt="img">
+				<img src="../img/mlqs.jpg" height="423" width="800" class="image" alt="img">
 				<div style="padding: 14px;">
-					<span>好吃的汉堡</span>
+					<!-- <span>{{ item.title }}</span> -->
+          <!-- <span>{{ item.info }}</span> -->
 					<div class="bottom clearfix">
 						<time class="time">{{ currentDate }}</time>
 						<el-button type="text" class="button">操作按钮</el-button>
@@ -19,7 +20,7 @@
 	export default {
 		data() {
 			return {
-				currentDate: new Data()
+				currentDate: new Date().toLocaleDateString()
 			}
 		}
 	}

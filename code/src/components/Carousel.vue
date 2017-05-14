@@ -1,7 +1,7 @@
 <template>
 	<el-carousel :interval="3000" type="card" height="200px">
     <el-carousel-item v-for="item in carouselImg">
-      <img :src="item.path" height="360" width="550" :title="item.intro" :alt="item.intro">
+      <img :src="item.path" height="360" width="750" :title="item.intro" :alt="item.intro">
     </el-carousel-item>
   </el-carousel>
 </template>
@@ -40,6 +40,10 @@
 <style scoped>
   .el-carousel {
     margin-top: 30px;
+  }
+
+  .el-carousel img {
+    /*width: 550px;*/
   }
 
 	.el-carousel__item h3 {
