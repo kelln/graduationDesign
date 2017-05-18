@@ -29,6 +29,9 @@
 </script>
 
 <style scoped>
+  body {
+    min-width: 955px;
+  }
   .box {
     width: 200px;
     height: 100px;

@@ -1,11 +1,11 @@
 <template>
 	<div id="app">
 		<div class="search">
-			<el-select slot="append" v-model="selectResult" placeholder="请选择">
+<!-- 			<el-select slot="append" v-model="selectResult" placeholder="请选择">
 				<el-option label="旅游" value="1"></el-option>
 				<el-option label="出行" value="2"></el-option>
 				<el-option label="住宿" value="3"></el-option>
-			</el-select>
+			</el-select> -->
 			<el-input placeholder="你想去哪?"  v-model="search">
 				<el-button slot="append" icon="search"></el-button>
 			</el-input>
@@ -62,7 +62,7 @@
 		},
 		components: {
 			'color-bar': Color,
-			'card': Card
+			'card': Card,
 		}
 	}
 </script>
