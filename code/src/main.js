@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VueRouter from 'vue-router'
+import Axios from 'axios' 
 import App from './App'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
@@ -14,6 +15,7 @@ Vue.use(Vuex)
 Vue.use(VueRouter)
 
 Vue.config.productionTip = false
+Vue.prototype.$ajax = Axios
 
 const routes = [
 	{ path: '/', component: function(resolve) { require(['./components/Pages/HomePage.vue'], resolve) }, name: 'homePage' },
