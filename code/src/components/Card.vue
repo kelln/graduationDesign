@@ -32,7 +32,9 @@
         localStorage.setItem('info', JSON.stringify(currentItem));
         this.$router.push('/viewdetial?id=' + currentItem.id);
       }
-
+    },
+    created() {
+      console.log(this.cardInfo);
     }
 	}
 </script>

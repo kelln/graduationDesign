@@ -5,14 +5,14 @@
 			<div class="advise-info">
 				<div class="itnation top3">
 					<p class="advise-head">国际路线推荐</p>
-					<div class="advise-item" v-for="item in outHot">
+					<div class="advise-item" v-for="item in outHot" @click="adviseDetial(item)">
 						<img class="advise-img" :src="item.imgurl" height="60" width="100" alt="advise">
 						<span class="advise-title">{{ item.title | placeNameFilter }}</span>
 					</div>
 				</div>
 				<div class="about top3">
 					<p class="advise-head">相关线路推荐</p>
-					<div class="advise-item" v-for="aItem in advise">
+					<div class="advise-item" v-for="aItem in advise" @click="adviseDetial(item)">
 						<img class="advise-img" :src="aItem.imgurl" height="60" width="100" alt="advise">
 						<span class="advise-title">{{ aItem.title | placeNameFilter }}</span>
 					</div>
@@ -41,7 +41,7 @@
 
 				<div class="buy-group">
 				    <el-tooltip class="item" effect="dark" content="将会跳转到外部网站购买" placement="top">
-				      <el-button type="primary" id="buy">购买</el-button>
+				      <el-button type="primary" id="buy" @click.native="buyCurrent">购买</el-button>
 				    </el-tooltip>
 			    </div>
 			
@@ -69,21 +69,16 @@
 			<div class="commit-group">
 				<p class="commit-title">评论区：</p>
 				<el-button id="commit-btn" type="success" @click="openMessageBox">我要评论</el-button>
-				<div v-for="item in evaluate">
-					<div class="commit-item">
-						<span class="commit-author">
-							{{ item.evaluateUserName }}
-						</span>
-						<span>:</span>
-						<span class="commit-detail">{{ item.content }}</span>
-					</div>
-<!-- 					<div class="commit-item">
-						<span class="commit-author">
-							Jason Ke
-						</span>
-						<span>:</span>
-						<span class="commit-detail">我很喜欢这个地方赞赞赞Q!!</span>
-					</div> -->
+				<div class="commit-item" v-for="(item,index) in evaluate" @mouseover="checkAuthor(index,item)" @mouseout="hideOperation">
+					<span class="commit-author">
+						{{ item.evaluateUserName }}
+					</span>
+					<span>:</span>
+					<span class="commit-detail">{{ item.content }}</span>
+					<span class="operation">
+						<span class="eidt" @click="updateEvaluate(item)" :class="{ fade: index == showIndex }">更新</span>
+						<span class="delete" @click="deleteEvaluate(item)" :class="{ fade: index == showIndex }">删除</span>
+					</span>
 				</div>
 			</div>
 		</div>
@@ -99,40 +94,59 @@
 				'evaluate': [],
 				'outHot': [],
 				'advise': [],
-				'randomNumber': []
+				'randomNumber': [],
+				'operation': false,
+				'showIndex': null,
 			}
 		},
 		methods: {
-			openMessageBox() {
-		        this.$prompt('请输入留言内容', '提示', {
-		          confirmButtonText: '确定',
-		          cancelButtonText: '取消',
-		          inputPattern: /^.*[^\s]+.*$/,
-		          inputErrorMessage: '请输入留言内容'
-		        }).then(({ value }) => {
-		        	var currentUserId = sessionStorage.getItem('userId');
-		        	alert(currentUserId);
-		        	var para ="userId="+currentUserId+"&scenicRegionId="+this.$route.query.id+"&content="+value;
-		        	fetch('http://localhost:8088/evaluate/addEvaluate.do', {
-		        		method: 'POST',
-		        		headers: {
-                              'Content-Type': 'application/x-www-form-urlencoded',
-                        }, 
-                        mode: 'cros',
-                        body: para,
-		        	});
+			//leave message
+			openMessageBox(id) {	
+				console.log(typeof id != 'number')			
+				if (sessionStorage.getItem('userName')) {
+			        this.$prompt('请输入留言内容', '提示', {
+			          confirmButtonText: '确定',
+			          cancelButtonText: '取消',
+			          inputPattern: /^.*[^\s]+.*$/,
+			          inputErrorMessage: '请输入留言内容'
+			        }).then(({ value }) => {
+			        	var currentUserId = sessionStorage.getItem('userId');
+			        	if (typeof id == 'number') {
+							var url = 'http://localhost:8088/evaluate/updateEvaluate';
+							var para = "userId="+currentUserId+"&evaluateId="+id+"&content="+value;
+						} else {
+							var url = 'http://localhost:8088/evaluate/addEvaluate.do';
+							var para ="userId="+currentUserId+"&scenicRegionId="+this.$route.query.id+"&content="+value;
+						}
+			        	fetch(url, {
+			        		method: 'POST',
+			        		headers: {
+	                              'Content-Type': 'application/x-www-form-urlencoded',
+	                        }, 
+	                        mode: 'cros',
+	                        body: para,
+			        	});
 
-		          this.$message({
-		            type: 'success',
-		            message: '留言成功'
-		          });
-		        }).catch(() => {
-		        	console.log(1)
-		          this.$message({
-		            type: 'info',
-		            message: '取消留言'
-		          });       
-		        });
+			          this.$message({
+			            type: 'success',
+			            message: '留言成功'
+			          });   
+            		  setTimeout(function() {
+            		  	location.reload();
+            		  },1000)
+			        }).catch(() => {
+			        	console.log(1)
+			          this.$message({
+			            type: 'info',
+			            message: '取消留言'
+			          });       
+			        });
+		    	} else {
+		    		this.$message({
+			            type: 'error',
+			            message: '请先登录'
+			         });
+		    	}
      		},
 			//select everyarea hotest place
 			choseHot: function(data) {
@@ -170,14 +184,73 @@
 						l--;
 					}
 				}
-				console.log(this.randomNumber);
-				console.log(this.advise);
+			},
+			//click advise to show detial
+			adviseDetial: function(data) {
+				localStorage.setItem('info', JSON.stringify(data));
+				this.$router.push('/viewdetial?id=' + data.id);
+				location.reload();
+			},
+			//buy function
+			buyCurrent: function() {
+				if (this.currentInfo.url != '') {
+					window.location = this.currentInfo.url;
+				} else {
+					this.$message({
+			          showClose: true,
+			          message: '对不起，当前景点未提供购买链接',
+			          type: 'error'
+			        });
+				}
+			},
+			//check this evaluate is belong to login user
+			checkAuthor: function(index,item) {
+				if (sessionStorage.getItem('userId')) {
+					var currentLoginUser = sessionStorage.getItem('userId');
+					if (currentLoginUser == item.userId) {
+						this.showIndex = index;
+					}
+				} 
+			},
+			//hide operation
+			hideOperation: function() {
+				this.showIndex = null;
+			},
+			//update evaluate
+			updateEvaluate: function(data) {
+				this.openMessageBox(data.evaluateId);
+			},
+			//delete evalute 
+			deleteEvaluate: function(data) {
+				var that = this;
+				var para = 'userId=' + data.userId + '&evaluateId=' + data.evaluateId;
+				fetch('http://localhost:8088/evaluate/deleteEvaluate', {
+                        method: 'POST',
+                        headers: {
+                              'Content-Type': 'application/x-www-form-urlencoded',
+                        }, 
+                        mode: "cors",
+                        body: para,
+                        }).then(function(res) {
+                          if (res.ok) {
+                            res.json().then(function(data) {
+                            	console.log(data)
+                                that.$message({
+						          showClose: true,
+						          message: '删除成功',
+						          type: 'success'
+						        });
+                                location.reload();
+                            });
+                          } else {
+                            console.log("Looks like the response wasn't perfect, got status", res.status);
+                          }
+                        }, function(e) {
+                          console.log("Fetch failed!", e);
+                        });
 			}
 		},		
 		created() {
-			console.log(this.$route.query.id);
-			console.log(Math.floor(Math.random()*10));
-			console.log(localStorage.getItem('info'));
 			var that = this;
 			this.currentInfo = JSON.parse(localStorage.getItem('info'));
 			var currentArea = this.currentInfo.area;
@@ -212,7 +285,6 @@
                           if (res.ok) {
                             res.json().then(function(data) {
                             	that.evaluate = data.list;
-                            	console.log(that.evaluate);
                               });
                           } else {
                             console.log("Looks like the response wasn't perfect, got status", res.status);
@@ -366,6 +438,35 @@
 		font-size: 16px;
 		width: 36px;
 		letter-spacing: 1px;
+	}
+	.advise-item {
+		cursor: pointer;
+	}
+	.commit-item {
+		position: relative;
+	}
+	.operation {
+		position: absolute;
+		top: 20px;
+		right: 10px;
+	}
+	.operation .eidt{
+		display: none;
+		color: green;
+		cursor: pointer;
+	}
+	.operation .delete{
+		display: none;
+		color: red;
+		cursor: pointer;
+	}
+	.operation .eidt:hover,
+	.operation .delete:hover {
+		text-shadow: 0.5px 0.5px blue;
+		transition: all 0.5s;
+	}
+	.operation .fade {
+		display: inline;
 	}
 	@media screen and (max-width:1020px) {
 		.advise-info .advise-head {

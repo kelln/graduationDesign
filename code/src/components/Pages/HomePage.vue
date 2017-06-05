@@ -4,21 +4,21 @@
 		<h1>Welcome To This Web</h1>
 		<!-- <search></search> -->
 		<tabs></tabs>
-		<pagniation></pagniation>
+		<!-- <pagniation></pagniation> -->
 	</div>
 </template>
 
 <script>
 	import Search from '../Search'
 	import Carousel from '../Carousel'
-	import Pagniation from '../Pagniation'
+	// import Pagniation from '../Pagniation'
 	import Tabs from '../tabs.vue'
 
 	export default {
 		components: {
 			'search': Search,
 			'carousel': Carousel,
-			'pagniation': Pagniation,
+			// 'pagniation': Pagniation,
 			'tabs': Tabs
 		}
 	}

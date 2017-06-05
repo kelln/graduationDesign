@@ -1,12 +1,14 @@
 <template>
-	<div id="app">
-		<div class="search">
-			<el-input placeholder="你想去哪?"  v-model="search">
-				<el-button slot="append" icon="search"></el-button>
-			</el-input>
-		</div>
-		<div class="card">
-			<card :cardInfo = "areaInfo"></card>
+	<div>
+		<div id="app">
+			<div class="search">
+				<el-input placeholder="你想去哪?"  v-model="search" @keyup.native="key($event)">
+					<el-button slot="append" icon="search" @click.native="searchItem"></el-button>
+				</el-input>
+			</div>
+			<div class="card">
+				<card :cardInfo = "areaInfo" :totalItem="totalPage"></card>
+			</div>
 		</div>
 	</div>
 </template>
@@ -22,15 +24,32 @@
 			return {
 				search: '',
 				selectResult: '',
+				totalPage: 0
 			}
-		},
-		created() {
-			
-				
-			
 		},
 		components: {
 			'card': Card,
+		},
+		created() {
+			this.totalPage = this.areaInfo.length
+		},
+		methods: {
+			key: function(ev) {
+				if (ev.keyCode == 13) {
+					this.searchItem();
+				}
+			},
+			searchItem: function() {
+				if (this.search != '') {
+					console.log(this.areaInfo);
+				} else {
+					this.$message({
+			          showClose: true,
+			          message: '请输入搜索内容',
+			          type: 'warning'
+			        });
+				}
+			}
 		}
 	}
 </script>

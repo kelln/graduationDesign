@@ -12,31 +12,31 @@
             </template>
         </div>
         <div class="login" v-if="isShow">
-            <el-input label="username" placeholder="Please enter username" v-model="usernameInput">
+            <el-input label="username" placeholder="请输入用户名" v-model="usernameInput">
                 <template slot="prepend">{{ username }}</template>
             </el-input>
-            <el-input type="password" label="passwd" placeholder="Please enter password" v-model="passwdInput">
+            <el-input type="password" label="passwd" placeholder="请输入用户密码" v-model="passwdInput">
                 <template slot="prepend">{{ passwd }}</template>
             </el-input>
             <el-button type="primary" @click="checkLogin">登录</el-button>
             <p class="forget-passwd">忘记密码</p>
         </div>
         <div class="register" v-if="!isShow">
-            <el-input label="username" placeholder="Please enter username" v-model="rUsename">
+            <el-input label="username" placeholder="请输入用户名" v-model="rUsename">
                 <template slot="prepend">{{ username }}</template>
             </el-input>
-            <el-input label="passwd" placeholder="Please enter nickname" v-model="rNickname">
-                <template slot="prepend">Nickname</template>
+            <el-input label="passwd" placeholder="请输入用户昵称" v-model="rNickname">
+                <template slot="prepend">用户昵称</template>
             </el-input>
-            <el-input type="password" label="passwd" placeholder="Please enter password" v-model="rPasswd">
+            <el-input type="password" label="passwd" placeholder="请输入用户密码" v-model="rPasswd">
                 <template slot="prepend">{{ passwd }}</template>
             </el-input>
-            <el-input type="password" label="passwd" placeholder="Please verify password" v-model="ryPasswd">
-                <template slot="prepend">Verify</template>
+            <el-input type="password" label="passwd" placeholder="请确认用户密码" v-model="ryPasswd">
+                <template slot="prepend">确认密码</template>
             </el-input>
-            <el-select placeholder="Gender" v-model="gender">
-                <el-option value="0" label="Male"></el-option>
-                <el-option value="1" label="Female"></el-option>
+            <el-select placeholder="性别" v-model="gender">
+                <el-option value="0" label="男"></el-option>
+                <el-option value="1" label="女"></el-option>
             </el-select>
             <el-button type="primary" @click="checkRegister">注册</el-button>
         </div>
@@ -47,9 +47,9 @@
     export default {
         data() {
             return {
-                welMsg: 'Welcome To Login In',
-                username: 'Username',
-                passwd: 'Password',
+                welMsg: '欢 迎 登 录',
+                username: '用户名',
+                passwd: '密码',
                 isShow: true,
                 usernameInput: '',
                 passwdInput: '',
@@ -64,11 +64,11 @@
             show: function(tab) {
                 if (tab.index == "0") {
                     this.isShow = true;
-                    this.welMsg = 'Welcome To Login In'
+                    this.welMsg = '欢 迎 登 录'
                 }
                 if (tab.index == "1") {
                     this.isShow = false;
-                    this.welMsg = 'Welcome To Register'
+                    this.welMsg = '欢 迎 注 册'
                 }
             },
             open: function(Type, msg) {
@@ -95,6 +95,10 @@
                             res.json().then(function(data) {
                                 if (data.code == 1) {
                                     that.open('success', '注册成功');
+                                    // setTimeout(function() {
+                                    //     console.log(document.getElementsByClassName("el-tabs__item"));
+                                    //     document.getElementsByClassName("el-tabs__item").click();
+                                    // }, 2000)
                                 } else {
                                     that.open('warning', '注册失败，用户名已被注册');
                                 }
@@ -122,7 +126,8 @@
                             res.json().then(function(data) {
                               if (data.code == 1) {
                                 that.open('success','登录成功');
-                                sessionStorage.setItem('userId',data.data);
+                                sessionStorage.setItem('userId', data.data);
+                                sessionStorage.setItem('userName', that.usernameInput);
                                 that.$router.push('/');
                               } else {
                                 that.open('warning','用户名或密码错误');
