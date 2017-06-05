@@ -2,11 +2,6 @@
   <div id="app">
     <home-header></home-header>
     <router-view></router-view>
-<!--     <div class="clock-box">
-      <clock></clock>
-    </div> -->
-    <!-- <test></test> -->
-    <!-- <home-footer></home-footer> -->
   </div>
 </template>
 
@@ -14,15 +9,18 @@
   import Header from './components/Head'
   import Foot from './components/Footer.vue'
   import Test from './components/test.vue'
-// import Clock from './components/clock.vue'
 
   export default {
     name: 'app',
     components: {
       'home-header': Header,
       'home-footer': Foot,
-      // 'clock': Clock,
       'test': Test
+    },
+    methods: {
+      haha(id) {
+        console.log(this.$route.query.id);
+      }
     }
 }
 

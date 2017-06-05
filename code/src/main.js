@@ -28,9 +28,15 @@ const router = new VueRouter({
   routes
 })
 
+// const store = new Vuex({
+	
+// })
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  router,
+  // store,
   render: x => x(App),
-  router
+
 })

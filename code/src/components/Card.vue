@@ -1,11 +1,11 @@
 <template>
 	<el-row class="show-imgcard">
 		<el-col :span="7" v-for="(item, index) in cardInfo" :offset="0">
-			<el-card :body-style="{ padding: '0px' }">
-				<img :src="item.photo" height="300" width="800" class="image" alt="img">
+			<el-card :body-style="{ padding: '0px' }" @click.native="viewDetail(item)">
+				<img :src="item.imgurl" height="300" width="800" class="image" alt="img">
 				<div style="padding: 14px;">
 					<h3 class="title">{{ item.title }}</h3>
-          <span class="info">{{ item.info }}</span>
+          <span class="info">{{ item.address }}</span>
 					<!-- <div class="bottom clearfix">
 						<time class="time">{{ currentDate }}</time>
 						<el-button type="text" class="button" @click="clicked">操作按钮</el-button>
@@ -17,21 +17,20 @@
 </template>
 
 <script>
+  // global.currentDetail = '';
 	export default {
     props: [
-            'cardInfo'
+      'cardInfo'
     ],
 		data() {
 			return {
 				currentDate: new Date().toLocaleDateString()
 			}
 		},
-    created() {
-      console.log(this.cardInfo)
-    },
     methods: {
-      clicked: function() {
-        console.log(this.cardInfo);
+      viewDetail(currentItem) {
+        localStorage.setItem('info', JSON.stringify(currentItem));
+        this.$router.push('/viewdetial?id=' + currentItem.id);
       }
 
     }
@@ -91,11 +90,12 @@
   }
 
   .show-imgcard .info {
+    height: 24px;
     word-break: break-all;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical; 
-    -webkit-line-clamp: 3; 
+    -webkit-line-clamp: 1; 
     overflow: hidden;
   }
 </style>

@@ -17,18 +17,12 @@
 		},
 		methods: {
 			axios() {
-				this.$ajax({
-					methods: 'GET',
-					url: 'http://localhost:8088/scenic/getAllScenicRegion.do',
-					datatype: 'jaaaa',
-					jsonp: 'jsonCallBack',
-					success: function(response) {
-						this.datas = response;
-					},
-					error: function(response) {
-						console.log(response);
-					}
+				fetch('http://localhost:8088/scenic/getAllScenicRegion.do').then(response => response.json())
+				.then(data => {
+					this.datas = data; 
+					console.log(this.datas);
 				})
+				.catch(e => console.error('error'));
 			}
 		}
 	}

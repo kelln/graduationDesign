@@ -34,10 +34,9 @@
             <el-input type="password" label="passwd" placeholder="Please verify password" v-model="ryPasswd">
                 <template slot="prepend">Verify</template>
             </el-input>
-            <el-select placeholder="职位" v-model="rPosition">
-                <el-option value="1" label="教师"></el-option>
-                <el-option value="2" label="学生"></el-option>
-                <el-option value="3" label="小学生"></el-option>
+            <el-select placeholder="Gender" v-model="gender">
+                <el-option value="0" label="Male"></el-option>
+                <el-option value="1" label="Female"></el-option>
             </el-select>
             <el-button type="primary" @click="checkRegister">注册</el-button>
         </div>
@@ -58,7 +57,7 @@
                 rNickname: '',
                 rPasswd: '',
                 ryPasswd: '',
-                rPosition: ''
+                gender: ''
             }
         },
         methods: {
@@ -79,20 +78,68 @@
                 })
             },
             checkRegister: function() {
-                if (this.rUsename == '' || this.rNickname == '' || this.rPasswd == '' || this.ryPasswd == '' || this.rPosition == '') {
+                if (this.rUsename == '' || this.rNickname == '' || this.rPasswd == '' || this.ryPasswd == '' || this.gender == '') {
                     this.open('warning','请填写完整表格')
-                }
+                } else {
+                    var that = this;
+                    var para = 'rUsename='+this.rUsename+'&rPasswd='+this.rPasswd+'&rNickname='+this.rNickname+'&gender='+this.gender };
+                    fetch( 'http://localhost:8088/user/userRegister.do', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: para,
+                        mode: 'cros',
+                     }).then(function(res) {
+                        if (res.ok) {
+                            res.json().then(function(data) {
+                                if (data.code == 1) {
+                                    that.open('success', '注册成功');
+                                } else {
+                                    that.open('warning', '注册失败，用户名已被注册');
+                                }
+                            })
+                        }
+                     })
+                
             },
             checkLogin: function() {
                 if (this.usernameInput == '' || this.passwdInput == '') {
-                    this.open()
-                } else {
-                    if (this.usernameInput == 'admin' && this.passwdInput == 'admin' ) {
-                        this.open('success','登录成功');
-                        this.$router.push('/');
-                    } else {
-                        this.open('error','用户名或密码错误');
-                    }
+                    this.open('warning','请填写用户名和密码')
+                } else { 
+                    var that = this;
+                    // var paraa = { "usernameInput": this.usernameInput, "passwdInput": this.passwdInput }
+                    var para = "usernameInput="+this.usernameInput+"&passwdInput="+this.passwdInput;
+                   fetch('http://localhost:8088/user/userLogin.do', {
+                        method: 'POST',
+                        headers: {
+                              'Content-Type': 'application/x-www-form-urlencoded',
+                        }, 
+                        mode: "cors",
+                        body: para,
+                        }).then(function(res) {
+                          if (res.ok) {
+                            res.json().then(function(data) {
+                              if (data.code == 1) {
+                                that.open('success','登录成功');
+                                sessionStorage.setItem('userId',data.data);
+                                that.$router.push('/');
+                              } else {
+                                that.open('warning','用户名或密码错误');
+                              }
+                            });
+                          } else {
+                            console.log("Looks like the response wasn't perfect, got status", res.status);
+                          }
+                        }, function(e) {
+                          console.log("Fetch failed!", e);
+                        });
+                    // if (this.usernameInput == 'admin' && this.passwdInput == 'admin' ) {
+                    //     this.open('success','登录成功');
+                    //     this.$router.push('/');
+                    // } else {
+                    //     this.open('error','用户名或密码错误');
+                    // }
                 }
             }
         }
